@@ -1,85 +1,170 @@
 'use client'
 import React from 'react'
 import { useState } from 'react';
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from '../../firebase';
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const page = () => {
 
-    const [fileUpload, setFileUpload] = useState(null);
-    const uploadFile = () => {
-        if(imageUpload == null){
+    const [file, setFile] = useState(null);
+
+    const handleFileUpload = async () => {
+        if (!file) {
+            alert('You did not select a file!')
             return;
         }
-        else{
-            send();
-            //api request for it to go into firestore with file path in storage, name of file, descript
-            //upload to firebase storage 
-        }
+        send();
+
 
     };
+    async function send() {
+        console.log(file)
+        const storageRef = ref(storage, 'files/' + file.name)
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        uploadTask.on('state_changed',
+            (snapshot) => {
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+                switch (snapshot.state) {
+                    case 'paused':
+                        console.log('Upload is paused');
+                        break;
+                    case 'running':
+                        console.log('Upload is running');
+                        break;
+                }
+            },
+            (error) => {
+                switch (error.code) {
+                    case 'storage/unauthorized':
+                        break;
+                    case 'storage/canceled':
+                        break;
+                    case 'storage/unknown':
+                        break;
+                }
+            },
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    console.log('File available at', downloadURL);
+                    sendItUp(downloadURL)
 
 
-  async function send() {
-    let file = fileUpload
-    console.log(file)
-    const storageRef = ref(storage, 'files/' + file.name)
-    const uploadTask = uploadBytesResumable(storageRef, file);
-    uploadTask.on('state_changed',
-      (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('Upload is ' + progress + '% done');
-        switch (snapshot.state) {
-          case 'paused':
-            console.log('Upload is paused');
-            break;
-          case 'running':
-            console.log('Upload is running');
-            break;
+                });
+
+            }
+        );
+
+    }
+    async function sendItUp(downloadURL) {
+        const res2 = await fetch('/api/addBook', {
+            method: 'POST',
+            body: JSON.stringify({ file: downloadURL, name: bookName, desc: bookDesc }),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+    }
+
+    async function uploadTopic() {
+        const res5 = await fetch('/api/addTopic', {
+            method: 'POST',
+            body: JSON.stringify({ name: playlistName, videos: links }),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+    }
+
+    const [playlistName, setPlaylistName] = useState('')
+
+    const handleInputChange = (event) => {
+        setPlaylistName(event.target.value);
+    };
+
+    const [videoLink, setVideoLink] = useState('');
+    const [links, setLinks] = useState([]);
+
+    const handleInputChangeVideo = (event) => {
+        setVideoLink(event.target.value);
+    };
+
+    const handleAddInput = () => {
+        if (videoLink.trim() !== '') {
+            setLinks([...links, videoLink]);
+            setVideoLink('');
         }
-      },
-      (error) => {
-        switch (error.code) {
-          case 'storage/unauthorized':
-            break;
-          case 'storage/canceled':
-            break;
-          case 'storage/unknown':
-            break;
+    };
+    const handleInputChangeBook = (event) => {
+        setBookName(event.target.value);
+    };
+
+    const handleInputChangeDesc = (event) => {
+        setBookDesc(event.target.value);
+    };
+
+    const [bookName, setBookName] = useState('')
+    const [bookDesc, setBookDesc] = useState('')
+
+    const handleTopicSubmit = () => {
+        if (!links || !playlistName){
+            alert("Add at least one video or add a name!")
+            return;
         }
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log('File available at', downloadURL);
-          //sendItUp(downloadURL)
-        });
+        uploadTopic();
+    }
+    return (
 
-      }
-    );
-  
-  }
-  async function sendItUp(downloadURL) {
-    const res2 = await fetch('/api/createPost', {
-      method: 'POST',
-      body: JSON.stringify({ file: downloadURL, name: localStorage.getItem("name"), familyCode: localStorage.getItem("familyCode"), caption: caption, }),
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-  }
-  return (
-    <div>
-        <h1>Admin Portal Stem For Fun</h1>
-        <h2>Add a book</h2>
-        <input type="file" onChange={(event) => {setFileUpload(event.target.files[0])}} />
-        <button onClick={uploadFile}>Upload File</button>
-        <input placeholder="Name" />
-        <input placeholder="Description" />
+        <div>
+            <h1>Admin Portal for STEM Made Fun</h1>
 
-        <h2>Add a playlist</h2>
-        <input placeholder="Name of playlist" />
-    </div>
-  )
+            <h2>Upload Book</h2>
+            <input type='file' onChange={(e) => { setFile(e.target.files[0]) }} />
+            <input
+                type="text"
+                placeholder="book name"
+                value={bookName}
+                onChange={handleInputChangeBook}
+            />
+
+            <input
+                type="text"
+                placeholder="book description"
+                value={bookDesc}
+                onChange={handleInputChangeDesc}
+            />
+            <button onClick={handleFileUpload}>Upload</button>
+
+
+            <h2>Upload Topic</h2>
+            <input
+                type="text"
+                placeholder="Topic name"
+                value={playlistName}
+                onChange={handleInputChange}
+            />
+            <input
+                type="text"
+                value={videoLink}
+                onChange={handleInputChangeVideo}
+                placeholder="Enter video link"
+            />
+            <button onClick={handleAddInput}>+</button>
+
+
+
+            <h3>{playlistName}</h3>
+            <ul>
+                {links.map((link, index) => (
+                    <li key={index}>{link}</li>
+                ))}
+            </ul>
+
+            <button onClick={handleTopicSubmit}>Submit topic</button>
+
+
+        </div>
+    )
 }
 
 export default page
