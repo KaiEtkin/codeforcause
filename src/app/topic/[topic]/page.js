@@ -10,16 +10,16 @@ const page = ({
         
     }, [])
     async function init(){
-        const res2 = await fetch('/api/getBook', {
+        const res2 = await fetch('/api/getTopic', {
             method: 'POST',
-            body: JSON.stringify({ name: params.book }),
+            body: JSON.stringify({ name: params.topic }),
             headers: {
                 'Content-Type': 'application/json',
             }
         })
     }
   return (
-    <div>{params.book}</div>
+    <div>{params.topic}</div>
   )
 }
 
