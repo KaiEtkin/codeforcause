@@ -72,7 +72,7 @@ const page = ({
       {messages.map((message) => {
           return (<div style = {{margin: '1%',padding: '0.2% 1%', borderRadius: '20px', backgroundColor: "#94F6DE", textAlign: "center"}}>
               <h4>{message.role}:</h4>
-              <h5>{message.content}</h5>
+              <h5 style= {{width: '50vw'}}>{message.content}</h5>
               </div>
           )
       })}

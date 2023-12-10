@@ -34,7 +34,7 @@ const Books = () => {
                             style={{
                                 cursor: 'pointer',
 
-                                borderRadius: '55px',
+                                borderRadius: '45px',
                                 margin: '5%',
                                 padding: '10%',
                                 textDecoration: 'none', // Remove underline
