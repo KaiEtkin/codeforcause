@@ -59,7 +59,7 @@ const page = () => {
     async function sendItUp(downloadURL) {
         const res2 = await fetch('/api/addBook', {
             method: 'POST',
-            body: JSON.stringify({ file: downloadURL, name: bookName, desc: bookDesc }),
+            body: JSON.stringify({ file: downloadURL, name: bookName, desc: bookDesc, id: chatID }),
             headers: {
                 'Content-Type': 'application/json',
             }
@@ -105,7 +105,10 @@ const page = () => {
 
     const [bookName, setBookName] = useState('')
     const [bookDesc, setBookDesc] = useState('')
-
+    const [chatID, setChatID] = useState('')
+    const handleInputChangeID = (event) => {
+        setChatID(event.target.value);
+    };
     const handleTopicSubmit = () => {
         if (!links || !playlistName) {
             alert("Add at least one video or add a name!")
@@ -116,7 +119,7 @@ const page = () => {
 
     const [password, setPassword] = useState('');
     const [locked, setLocked] = useState(true);
-    let correctPass = 'codeforcausehackathon1492'
+    let correctPass = 'password'
     const handlePassword = (event) => {
         setPassword(event.target.value);
     };
@@ -124,76 +127,83 @@ const page = () => {
     const checkLocked = () => {
         if (password == correctPass) {
             setLocked(false);
-            alert('correct')
+            alert('Correct!')
         }
-        else{
-            alert('wrong password!')
+        else {
+            alert('Wrong Password!')
         }
     }
     return (
-
-        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}>
-            {locked && <div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+          <div>
+            {locked && (
+              <div>
                 <input
-                    type="password"
-                    placeholder="admin password"
-                    value={password}
-                    onChange={handlePassword}
+                  type="password"
+                  placeholder="Admin Password"
+                  value={password}
+                  onChange={handlePassword}
                 />
-                <button onClick={checkLocked}>Check password</button>
-            </div>
-            }
-            {!locked &&
-                <div>
-                    <h1>Admin Portal for STEM Made Fun</h1>
-
-                    <h2>Upload Book</h2>
-                    <input type='file' onChange={(e) => { setFile(e.target.files[0]) }} />
-                    <input
-                        type="text"
-                        placeholder="book name"
-                        value={bookName}
-                        onChange={handleInputChangeBook}
-                    />
-
-                    <input
-                        type="text"
-                        placeholder="book description"
-                        value={bookDesc}
-                        onChange={handleInputChangeDesc}
-                    />
-                    <button onClick={handleFileUpload}>Upload</button>
-
-
-                    <h2>Upload Topic</h2>
-                    <input
-                        type="text"
-                        placeholder="Topic name"
-                        value={playlistName}
-                        onChange={handleInputChange}
-                    />
-                    <input
-                        type="text"
-                        value={videoLink}
-                        onChange={handleInputChangeVideo}
-                        placeholder="Enter video link"
-                    />
-                    <button onClick={handleAddInput}>+</button>
-
-
-
-                    <h3>{playlistName}</h3>
-                    <ul>
-                        {links.map((link, index) => (
-                            <li key={index}>{link}</li>
-                        ))}
-                    </ul>
-
-                    <button onClick={handleTopicSubmit}>Submit topic</button>
-
-                </div>}
+                <button onClick={checkLocked}>Check Password</button>
+              </div>
+            )}
+            {!locked && (
+              <div>
+                <h1>Admin Portal for STEM Made Fun</h1>
+      
+                <h2>Upload Book</h2>
+                <input type="file" onChange={(e) => { setFile(e.target.files[0]) }} />
+                <input
+                  type="text"
+                  placeholder="Book Name"
+                  value={bookName}
+                  onChange={handleInputChangeBook}
+                />
+      
+                <input
+                  type="text"
+                  placeholder="Book Description"
+                  value={bookDesc}
+                  onChange={handleInputChangeDesc}
+                />
+      
+                <input
+                  type="text"
+                  placeholder="Chat ID"
+                  value={chatID}
+                  onChange={handleInputChangeID}
+                />
+                <button onClick={handleFileUpload}>Upload</button>
+      
+                <h2>Upload Topic</h2>
+                <input
+                  type="text"
+                  placeholder="Topic Name"
+                  value={playlistName}
+                  onChange={handleInputChange}
+                />
+                <input
+                  type="text"
+                  value={videoLink}
+                  onChange={handleInputChangeVideo}
+                  placeholder="Video Link"
+                />
+                <button onClick={handleAddInput}>+</button>
+      
+                <h3>{playlistName}</h3>
+                <ul>
+                  {links.map((link, index) => (
+                    <li key={index}>{link}</li>
+                  ))}
+                </ul>
+      
+                <button onClick={handleTopicSubmit}>Submit Topic</button>
+              </div>
+            )}
+          </div>
         </div>
-    )
+      );
+      
 }
 
 export default page

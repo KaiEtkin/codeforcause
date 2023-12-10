@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { PineconeClient } from "@pinecone-database/pinecone";
+import { Pinecone } from "@pinecone-database/pinecone";
 import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { OpenAI } from "langchain/llms/openai";
@@ -15,11 +15,11 @@ export async function POST(request) {
   const { stream, handlers } = LangChainStream();
 
   // Initialize Pinecone Client
-  const pineconeClient = new PineconeClient();
-  await pineconeClient.init({
+  const pineconeClient = new Pinecone({
     apiKey: process.env.PINECONE_API_KEY ?? "",
     environment: "asia-southeast1-gcp",
   });
+
   const pineconeIndex = pineconeClient.Index(
     process.env.PINECONE_INDEX_NAME
   );

@@ -1,4 +1,5 @@
 'use client'
+const axios = require('axios').default;
 
 import { useRouter } from 'next/navigation'
 import { useState, useRef,useEffect } from "react";
@@ -11,15 +12,13 @@ import 'react-pdf/dist/esm/Page/AnnotationLayer.css'
 const page = ({
     params}) => {
     const router = useRouter()
-    pdfjs.GlobalWorkerOptions.workerSrc =  
-    `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`; 
- 
-    const [numPages, setNumPages] = useState(null);
-    const [pageNumber, setPageNumber] = useState(1);
+    
+   
     useEffect(() => {
         init();
     }, [])
-
+    const [messages, setMessages] = useState([]);
+    const [inp, setInp] = useState("");
     const [data, setData] = useState(null);
     async function init(){
         const res2 = await fetch('/api/getBook', {
@@ -33,20 +32,55 @@ const page = ({
         setData(data2);
         console.log(data2)
     }
-    function onDocumentLoadSuccess({ numPages: nextNumPages }) {
-      setNumPages(nextNumPages);
-      setPageNumber(1);
+   
+    function chatPDF(){
+      
+    if(data != null){  
+      const config = {
+        headers: {
+          "x-api-key": "sec_lA2rHaJ9WVJtEtlUBrmgUjw5kiWzzcrR",
+          "Content-Type": "application/json",
+        },
+      };
+
+      const dat = {
+        sourceId: "cha_"+data.id,
+        messages: [...messages,
+          {
+            role: "user",
+            content: "what is this book about?",
+          },
+        ],
+      };
+
+      axios
+        .post("https://api.chatpdf.com/v1/chats/message", dat, config)
+        .then((response) => {
+          console.log("Result:", response.data.content);
+          setMessages([...messages,{role: "user", content: inp},{role: "assistant", content: response.data.content}])
+          setInp("");
+        })
+        .catch((error) => {
+          console.error("Error:", error.message);
+          console.log("Response:", error.response.data);
+        });
+      }
     }
   if(data != null) {return (
-    <div>
+    <div style = {{display: 'flex', flexDirection: 'column', alignItems: "center", justifyContent: 'center'}}>
       <h1>{data.name}</h1>
-      <Document 
-        file={`https://secret-ocean-49799.herokuapp.com/${data.file}`} 
-        onLoadSuccess={onDocumentLoadSuccess} 
-        > 
-        <Page pageNumber={pageNumber} /> 
-      </Document> 
-      
+      {messages.map((message) => {
+          return (<div>
+              <h4 style = {{color: "1CD2A6"}}>{message.role}</h4>
+              <h5>{message.content}</h5>
+              </div>
+          )
+      })}
+      <div style = {{display: 'flex', flexDirection: 'row', alignItems: "center", justifyContent: 'center'}}>
+      <input value = {inp} onChange = {(e) => setInp(e.target.value)} placeholder = "learn by asking questions..."></input>
+      <button onClick = {chatPDF}>🕊</button>
+      </div>
+      <object type = "application/pdf" data = {data.file} width = "600" height = "700"></object>
 
     </div>
   )

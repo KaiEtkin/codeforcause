@@ -24,23 +24,50 @@ const page = () => {
 
     return (
         <div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
 
-            <h1>Topics</h1>
-            <div style={{ display: 'flex', flexDirection: 'row', }}>
-                {topicsArray.map((topic) => {
-                    return (
-                        <Link style={{ cursor: 'pointer', border: '2px solid black', borderRadius: '55px', width: '100%', margin: '5%', padding: '2%' }} href={`/topic/${topic.id}`}>
-
-                            <h3>{topic.data.name}</h3>
-                            <p>{topic.data.description}</p>
-
-                        </Link>
-                    )
-                })}
+                <h1>Topics</h1>
             </div>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}>
+                
+            {topicsArray.map((topic) => {
+                return (
+                    <Link
+                        style={{
+                            background: 'linear-gradient(to right, #1CD2A6, #1CD2A6)',
 
+                            display: 'flex',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+
+                            borderRadius: '55px',
+                            width: '100%',
+                            margin: '3%',
+                            padding: '2%',
+                            textDecoration: 'none',
+                            color: 'inherit',
+                            transition: 'transform 0.3s ease-in-out',  // Add a smooth transition for the transform property
+                        }}
+                        href={`/topic/${topic.id}`}
+                        onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
+                        onMouseOut={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+                    >
+                        <h3 style={{color:'white'}}>{topic.data.name}</h3>
+                        <p style={{color:'white'}}>{topic.data.description}</p>
+                    </Link>
+
+                )
+            })}
         </div>
+
+        </div >
     )
 }
 
 export default page
+

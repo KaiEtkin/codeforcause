@@ -1,6 +1,6 @@
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import { NextRequest, NextResponse } from "next/server";
-import { PineconeClient } from "@pinecone-database/pinecone";
+import { Pinecone } from "@pinecone-database/pinecone";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { PineconeStore } from "langchain/vectorstores/pinecone";
 
@@ -9,7 +9,8 @@ export async function POST(request) {
   const data = await request.formData();
   // Extract the uploaded file from the FormData
   const file= data.get("file");
-
+  console.log("HEELLLOOOOOOO WHY AM I NOT HERE!!!!")
+  console.log(file);
   // Make sure file exists
   if (!file) {
     return NextResponse.json({ success: false, error: "No file found" });
@@ -25,11 +26,11 @@ export async function POST(request) {
   const splitDocuments = await pdfLoader.loadAndSplit();
 
   // Initialize the Pinecone client
-  const pineconeClient = new PineconeClient();
-  await pineconeClient.init({
+  const pineconeClient = new Pinecone({
     apiKey: process.env.PINECONE_API_KEY ?? "",
     environment: "asia-southeast1-gcp",
   });
+ 
   const pineconeIndex = pineconeClient.Index(
     process.env.PINECONE_INDEX_NAME
   );

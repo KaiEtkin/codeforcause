@@ -24,23 +24,35 @@ const Books = () => {
     }
 
     return (
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
             <h1>Books</h1>
-            <div style={{ display: 'flex', flexDirection: 'row', }}>
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                 {booksArray.map((book) => {
                     return (
-                        <Link style={{ cursor: 'pointer', border: '2px solid black', borderRadius: '55px', width: '100%', margin: '5%', padding: '2%'}} href={`/book/${book.id}`}>
-
-                                <h3>{book.data.name}</h3>
-                                <p>{book.data.description}</p>
-
+                        <Link
+                            style={{
+                                cursor: 'pointer',
+                                border: '2px solid black',
+                                borderRadius: '55px',
+                                margin: '5%',
+                                padding: '50%',
+                                textDecoration: 'none', // Remove underline
+                                color: 'inherit', // Use the default text color
+                            }}
+                            href={`/book/${book.id}`}
+                        >
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                                <h2>{book.data.name}</h2>
+                                <p style={{fontSize:'20px'}}>{book.data.description}</p>
+                        </div>
                         </Link>
-                    )
-                })}
-            </div>
 
+            )
+                })}
         </div>
+
+        </div >
     )
 }
 

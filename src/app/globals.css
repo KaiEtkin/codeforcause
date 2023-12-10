@@ -14,11 +14,12 @@ button {
     overflow: hidden;
     position: relative;
     transition: transform 0.3s ease-in-out;
-  }
+}
 
 button:hover {
     transform: scale(1.1);
-  }
+}
+
 button::before {
     content: "";
     position: absolute;
@@ -30,8 +31,37 @@ button::before {
     opacity: 0.1;
     transition: width 0.3s ease-in-out;
     z-index: -1;
-  }
+}
 
 button:hover::before {
     width: 100%;
+}
+/* Basic Styling */
+input {
+    border: 2px solid #3498db;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    margin: 10px; /* Add margin to the bottom */
   }
+  
+  /* Hover State */
+  input:hover {
+    border-color: #2980b9;
+    transform: scale(1.05);
+  }
+  
+  /* Focus State */
+  input:focus {
+    outline: none;
+    border-color: #1CD2A6;
+    box-shadow: 0 0 10px rgba(28, 210, 166, 0.5);
+    transform: scale(1.05);
+  }
+  
+  /* Placeholder Styling */
+  input::placeholder {
+    color: #bdc3c7;
+  }
+  
