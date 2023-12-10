@@ -26,19 +26,20 @@ const Books = () => {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
-            <h1>Books</h1>
+
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                 {booksArray.map((book) => {
                     return (
                         <Link
                             style={{
                                 cursor: 'pointer',
-                                border: '2px solid black',
+
                                 borderRadius: '55px',
                                 margin: '5%',
-                                padding: '50%',
+                                padding: '10%',
                                 textDecoration: 'none', // Remove underline
                                 color: 'inherit', // Use the default text color
+                           backgroundColor: '#94F6DE',
                             }}
                             href={`/book/${book.id}`}
                         >

@@ -9,16 +9,17 @@ export default function Home() {
 
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflowY: 'hidden', overflowX: 'hidden'}}>
 
-      <div style={{ backgroundColor: '#1CD2A6' }}>
-        <img src="/newLogo.png" width='20%'></img>
-        <FontAwesomeIcon style={{ width: '5%', color: 'black' }} icon={faYoutube} />
+      <img src="/newLogo.png" width='20%'></img>
+      <div style={{ width: '100vw', borderRadius: '70px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#1CD2A6' }}>
 
-        <Link href="/topics"><button>Learn Topics</button></Link>
-        <FontAwesomeIcon style={{ width: '5%', color: 'black' }} icon={faBookOpen} />
+        <FontAwesomeIcon style={{ marginTop: '2%', width: '5%', color: 'white' }} icon={faYoutube} />
+
+        <Link style={{margin: '3%'}} href="/topics"><button style={{backgroundColor: '#94F6DE', color: 'black'}} >Learn Topics</button></Link>
+        <FontAwesomeIcon style={{ width: '5%', color: 'white' }} icon={faBookOpen} />
         <Books />
       </div>
-      </div>
-      )
+    </div>
+  )
 }

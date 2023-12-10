@@ -17,7 +17,7 @@ const page = ({
     useEffect(() => {
         init();
     }, [])
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState([{role:"user", content: "heres a first placeholder question"}, {role:"assistant", content: "wow that is a very interesting placeholder question. I am intrigued!"}]);
     const [inp, setInp] = useState("");
     const [data, setData] = useState(null);
     async function init(){
@@ -87,7 +87,7 @@ const page = ({
   }
   else{
     return (
-      <div><h1>Loading</h1></div>
+      <div ><h1 style = {{left: '50%', position: 'absolute', top: "50%", transform: "translateXY(-50%)"}}>Loading</h1></div>
     )
   }
 }

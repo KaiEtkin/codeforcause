@@ -65,3 +65,12 @@ input {
     color: #bdc3c7;
   }
   
+
+  html::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE and Edge */
+  html {
+    -ms-overflow-style: none;
+  }
