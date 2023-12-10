@@ -132,7 +132,7 @@ const page = () => {
     }
     return (
 
-        <div>
+        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}>
             {locked && <div>
                 <input
                     type="password"
