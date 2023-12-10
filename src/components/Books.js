@@ -39,19 +39,24 @@ const Books = () => {
                                 padding: '10%',
                                 textDecoration: 'none', // Remove underline
                                 color: 'inherit', // Use the default text color
-                           backgroundColor: '#94F6DE',
+                                backgroundColor: '#94F6DE',
+                                transition: 'transform 0.3s ease-in-out',  // Add a smooth transition for the transform property
+
                             }}
                             href={`/book/${book.id}`}
+                            onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
+                            onMouseOut={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+
                         >
                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                                 <h2>{book.data.name}</h2>
-                                <p style={{fontSize:'20px'}}>{book.data.description}</p>
-                        </div>
+                                <p style={{ fontSize: '20px' }}>{book.data.description}</p>
+                            </div>
                         </Link>
 
-            )
+                    )
                 })}
-        </div>
+            </div>
 
         </div >
     )

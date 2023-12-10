@@ -17,7 +17,7 @@ const page = ({
     useEffect(() => {
         init();
     }, [])
-    const [messages, setMessages] = useState([{role:"user", content: "heres a first placeholder question"}, {role:"assistant", content: "wow that is a very interesting placeholder question. I am intrigued!"}]);
+    const [messages, setMessages] = useState([]);
     const [inp, setInp] = useState("");
     const [data, setData] = useState(null);
     async function init(){
@@ -70,8 +70,8 @@ const page = ({
     <div style = {{display: 'flex', flexDirection: 'column', alignItems: "center", justifyContent: 'center'}}>
       <h1>{data.name}</h1>
       {messages.map((message) => {
-          return (<div>
-              <h4 style = {{color: "1CD2A6"}}>{message.role}</h4>
+          return (<div style = {{margin: '1%',padding: '0.2% 1%', borderRadius: '20px', backgroundColor: "#94F6DE", textAlign: "center"}}>
+              <h4>{message.role}:</h4>
               <h5>{message.content}</h5>
               </div>
           )
